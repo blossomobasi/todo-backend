@@ -1,3 +1,5 @@
+const userRouter = require("./routes/userRoutes");
+
 module.exports = function (app) {
     app.get("/", (req, res) => {
         res.status(200).json({
@@ -6,6 +8,8 @@ module.exports = function (app) {
             version: "1.0.0",
         });
     });
+
+    app.use("/api/v1/users", userRouter);
 
     app.all("*", (req, res) => {
         res.status(404).json({
