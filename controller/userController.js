@@ -17,7 +17,12 @@ const getAllUsers = async (req, res) => {
 const createUser = catchAsync(async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
-    const newUser = await User.create({ firstName, lastName, email, password });
+    const newUser = await User.create({
+        firstName,
+        lastName,
+        email,
+        password,
+    });
 
     res.status(201).json({
         status: "success",
@@ -30,7 +35,7 @@ const createUser = catchAsync(async (req, res) => {
 const updateUser = catchAsync(async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
 
-    const updatedUser = await User.findOneAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
         { firstName, lastName, email, password },
         {
