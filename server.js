@@ -6,6 +6,7 @@ const app = require("./index");
 
 // DATABASE CONNECTION
 const DB = process.env.DB_URL.replace("<PASSWORD>", process.env.DB_PASSWORD);
+
 mongoose
     .connect(DB)
     .then(() => console.log("DB Successfully connected."))
