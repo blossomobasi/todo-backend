@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const globalErrorHandler = require("./controller/errorController");
 
 const app = express();
 
@@ -10,5 +11,6 @@ if (process.env.NODE_ENV === "developmemt") {
 }
 
 require("./routes")(app);
+app.use(globalErrorHandler);
 
 module.exports = app;
