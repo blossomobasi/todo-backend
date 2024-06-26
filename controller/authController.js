@@ -31,11 +31,10 @@ function createSendToken(res, statusCode, user) {
 }
 
 const signup = catchAsync(async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     const newUser = await User.create({
-        firstName,
-        lastName,
+        username,
         email,
         password,
     });
