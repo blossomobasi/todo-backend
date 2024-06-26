@@ -28,11 +28,10 @@ const getUser = catchAsync(async (req, res, next) => {
 });
 
 const createUser = catchAsync(async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     const newUser = await User.create({
-        firstName,
-        lastName,
+        username,
         email,
         password,
     });
@@ -46,11 +45,11 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { firstName, lastName, email, password },
+        { username, email, password },
         {
             new: true,
             runValidators: true,
