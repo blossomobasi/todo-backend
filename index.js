@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === "developmemt") {
 }
 
 require("./routes")(app);
+
 app.use(globalErrorHandler);
 
 module.exports = app;
