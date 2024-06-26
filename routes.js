@@ -1,4 +1,5 @@
 const userRouter = require("./routes/userRoutes");
+const todoRouter = require("./routes/todoRoutes");
 const AppError = require("./utils/appError");
 
 module.exports = function (app) {
@@ -10,6 +11,7 @@ module.exports = function (app) {
         });
     });
     app.use("/api/v1/users", userRouter);
+    app.use("/api/v1/todos", todoRouter);
 
     app.all("*", (req, res, next) => {
         next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
