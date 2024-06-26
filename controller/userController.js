@@ -2,7 +2,7 @@ const User = require("../model/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = catchAsync(async (req, res) => {
     const users = await User.find();
 
     res.status(200).json({
@@ -12,7 +12,7 @@ const getAllUsers = async (req, res) => {
             users,
         },
     });
-};
+});
 
 const getUser = catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id);
@@ -77,4 +77,15 @@ const deleteUser = catchAsync(async (req, res, next) => {
     });
 });
 
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };
+const getMe = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            user,
+        },
+    });
+});
+
+module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser, getMe };
