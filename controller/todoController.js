@@ -30,9 +30,9 @@ const getTodo = catchAsync(async (req, res, next) => {
 const createTodo = catchAsync(async (req, res, next) => {
     const userId = req.user.id;
 
-    const { title, description, completed, reminder } = req.body;
+    const { description, completed, reminder } = req.body;
 
-    const newTodo = await Todo.create({ title, description, completed, reminder, user: userId });
+    const newTodo = await Todo.create({ description, completed, reminder, user: userId });
 
     res.status(201).json({
         status: "success",
