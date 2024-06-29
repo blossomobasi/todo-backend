@@ -4,6 +4,8 @@ const authController = require("../controller/authController");
 
 const router = express.Router();
 
+router.route("/mytodos").get(authController.protect, todoController.getUserTodos);
+
 router
     .route("/")
     .get(todoController.getAllTodos)
