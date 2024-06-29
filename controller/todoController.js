@@ -2,7 +2,7 @@ const Todo = require("../model/todoModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-const getAllTodos = catchAsync(async (req, res, next) => {
+const getAllTodos = catchAsync(async (req, res) => {
     const todos = await Todo.find();
 
     res.status(200).json({
@@ -27,7 +27,23 @@ const getTodo = catchAsync(async (req, res, next) => {
     });
 });
 
-const createTodo = catchAsync(async (req, res, next) => {
+const getUserTodos = catchAsync(async (req, res, next) => {
+    const userId = req.user.id;
+
+    const userTodos = await Todo.find({ user: userId });
+
+    if (!userTodos) return next(new AppError("The todo with the given ID was not found", 404));
+
+    res.status(200).json({
+        status: "success",
+        results: userTodos.length,
+        data: {
+            todos: userTodos,
+        },
+    });
+});
+
+const createTodo = catchAsync(async (req, res) => {
     const userId = req.user.id;
 
     const { description, completed, reminder } = req.body;
@@ -43,10 +59,16 @@ const createTodo = catchAsync(async (req, res, next) => {
 });
 
 const updateTodo = catchAsync(async (req, res, next) => {
-    const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-    });
+    const userId = req.user.id;
+    const todoId = req.params.id;
+
+    const { description, completed, reminder } = req.body;
+
+    const todo = await Todo.findOneAndUpdate(
+        { _id: todoId, user: userId },
+        { description, completed, reminder },
+        { new: true, runValidators: true }
+    );
 
     if (!todo) return next(new AppError("The todo with the given ID was not found", 404));
 
@@ -59,7 +81,10 @@ const updateTodo = catchAsync(async (req, res, next) => {
 });
 
 const deleteTodo = catchAsync(async (req, res, next) => {
-    const todo = await Todo.findByIdAndDelete(req.params.id);
+    const userId = req.user.id;
+    const todoId = req.params.id;
+
+    const todo = await Todo.findOneAndDelete({ _id: todoId, user: userId });
 
     if (!todo) return next(new AppError("The todo with the given ID was not found", 404));
 
@@ -69,4 +94,4 @@ const deleteTodo = catchAsync(async (req, res, next) => {
     });
 });
 
-module.exports = { getAllTodos, getTodo, createTodo, updateTodo, deleteTodo };
+module.exports = { getAllTodos, getTodo, getUserTodos, createTodo, updateTodo, deleteTodo };
