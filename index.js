@@ -33,7 +33,10 @@ app.use((req, res, next) => {
 
 // CORS
 const corsOptions = {
-    origin: [process.env.FRONTEND_BASE_URL, process.env.FRONTEND_PROD_URL],
+    origin:
+        process.env.NODE_ENV === "production"
+            ? process.env.FRONTEND_PROD_URL
+            : process.env.FRONTEND_BASE_URL,
     credentials: true,
     optionsSuccessStatus: 200,
 };

@@ -11,8 +11,7 @@ process.on("uncaughtException", (err) => {
 const app = require("./index");
 
 // DATABASE CONNECTION
-// const DB = process.env.DB_URL.replace("<PASSWORD>", process.env.DB_PASSWORD);
-const DB = process.env.DB_BASE_URL;
+const DB = process.env.DB_URL.replace("<PASSWORD>", process.env.DB_PASSWORD);
 
 mongoose
     .connect(DB)
