@@ -59,6 +59,12 @@ const login = catchAsync(async (req, res, next) => {
     createSendToken(res, 200, user);
 });
 
+const logout = catchAsync(async (req, res, next) => {
+    res.cookie("jwt", "loggedout", { expires: new Date(0), httpOnly: true });
+
+    res.status(200).json({ status: "success", message: "You have been logged out." });
+});
+
 const protect = catchAsync(async (req, res, next) => {
     let token;
 
@@ -85,4 +91,4 @@ const protect = catchAsync(async (req, res, next) => {
     next();
 });
 
-module.exports = { signup, login, protect };
+module.exports = { signup, login, logout, protect };
