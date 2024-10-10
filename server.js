@@ -13,10 +13,7 @@ const app = require("./index");
 // DATABASE CONNECTION
 const DB = process.env.DB_URL.replace("<PASSWORD>", process.env.DB_PASSWORD);
 
-mongoose
-    .connect(DB)
-    .then(() => console.log("DB Successfully connected."))
-    .catch((err) => console.log(err));
+mongoose.connect(DB).then(() => console.log("DB Successfully connected."));
 
 // PORT
 const PORT = process.env.PORT || 3000;

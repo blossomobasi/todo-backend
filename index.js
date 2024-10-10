@@ -10,7 +10,7 @@ const globalErrorHandler = require("./controller/errorController");
 
 const app = express();
 
-if (process.env.NODE_ENV === "developmemt") {
+if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 
