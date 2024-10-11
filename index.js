@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const express = require("express");
 const helmet = require("helmet");
 const mongoSanitizer = require("express-mongo-sanitize");
@@ -48,5 +49,26 @@ require("./routes")(app);
 
 // GLOBAL ERROR MIDDLEWARE
 app.use(globalErrorHandler);
+
+let isConnectedBefore = false;
+const DB = process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD);
+
+async function connectToDatabase() {
+  if (!isConnectedBefore) {
+    await mongoose.connect(DB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('DB Successfully connected.');
+    isConnectedBefore = true;
+  }
+}
+
+// Vercel Serverless Function Handler
+module.exports = async (req, res) => {
+    await connectToDatabase(); // Ensure MongoDB is connected before handling any requests
+    app(req, res); // Pass the request to Express
+  };
+
 
 module.exports = app;
